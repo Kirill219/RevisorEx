@@ -1,0 +1,104 @@
+<div class="page" *ngIf="!loading">
+  <app-menu></app-menu>
+  <app-user-toolbar></app-user-toolbar>
+  <main class="content">
+    <div class="greeting">
+      Сторінка Готелів
+    </div>
+    <div class="tasks" *ngIf="hotels && user">
+      <button class="add-task" [ngbPopover]="addForm" #popover="ngbPopover" placement="bottom-left" [autoClose]="'outside'" *ngIf="user.role == 'Головний Ревізор'">Додати Готель</button>
+      <div class="tasks__filters">
+        <div class="search-field">
+          <input class="input__field" placeholder="Введіть назву" [(ngModel)]="titleFilter">
+          <button class="input__button" (click)="loadHotels()">Пошук</button>
+        </div>
+        <div ngbDropdown class="filter">
+          <button class="filter-button" ngbDropdownToggle>Фільтр Міста</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+            <button ngbDropdownItem value="Одеса" *ngFor="let city of cities" (click)="filterData('city', city)">{{city}}</button>
+          </div>
+        </div>
+        <div ngbDropdown class="filter">
+          <button class="filter-button" ngbDropdownToggle>Фільтр Області</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+            <button ngbDropdownItem value="Одеська обл." *ngFor="let region of regions" (click)="filterData('region', region)">{{region}}</button>
+          </div>
+        </div>
+        <button class="filter-button" (click)="loadHotels()">Скасувати</button>
+      </div>
+      <table class="tasks__list">
+        <thead>
+        <tr>
+          <th>Назва</th>
+          <th>Місто</th>
+          <th>Область</th>
+          <th>Ініціали</th>
+          <th *ngIf="user.role == 'Головний Ревізор'">Видалення</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let hotel of hotels">
+          <td>{{hotel.title}}</td>
+          <td>{{hotel.city}}</td>
+          <td>{{hotel.region}}</td>
+          <td>{{hotel.code}}</td>
+          <td *ngIf="user.role == 'Головний Ревізор'">
+            <button class="delete-button"  [ngbPopover]="deleteForm" #popoverDelete="ngbPopover" [autoClose]="'outside'">Видалити Готель</button>
+            <ng-template #deleteForm>
+              <form [formGroup]="hotelForm" class="popover-form">
+                <div class="form-header">Видалити Готель</div>
+                <div class="form-group">
+                  <label class="input-label">Впевнені, що хочете видалити готель?</label>
+                </div>
+                <div class="form-bottom">
+                  <button class="btn btn-primary action" (click)="deleteHotel(hotel._id)">Видалити</button>
+                  <button class="btn btn-primary action" (click)="popoverDelete.close()">Закрити</button>
+                </div>
+              </form>
+            </ng-template>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+<ng-template #addForm>
+  <form [formGroup]="hotelForm" class="popover-form">
+    <div class="form-header">Додати Готель</div>
+    <div class="form-group">
+      <label class="input-label">Назва:</label>
+      <input class="input-value" formControlName="title">
+    </div>
+    <div class="form-group">
+      <div ngbDropdown class="filter drop">
+        <button class="filter-button" ngbDropdownToggle>Область</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+          <button ngbDropdownItem value="Одеська обл." *ngFor="let region of regions" (click)="setRegion(region)">{{region}}</button>
+        </div>
+      </div>
+      <div ngbDropdown class="filter drop">
+        <button class="filter-button" ngbDropdownToggle>Місто</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+          <button ngbDropdownItem value="Одеса" *ngFor="let city of cities" (click)="setCity(city)">{{city}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Область: </label>
+      <label class="added-field">{{regionName || '-'}}</label>
+    </div>
+    <div class="form-group">
+      <label>Місто: </label>
+      <label class="added-field">{{cityName || '-'}}</label>
+    </div>
+    <div class="form-bottom">
+      <button class="btn btn-primary action" [disabled]="hotelForm.invalid" (click)="createHotel()">Зберегти</button>
+      <button class="btn btn-primary action" (click)="reset()">Скасувати</button>
+      <button class="btn btn-primary action" (click)="popover.close()">Закрити</button>
+    </div>
+    <div class="alert-message" *ngIf="errorMessage != ''">
+      {{errorMessage}}
+    </div>
+  </form>
+</ng-template>

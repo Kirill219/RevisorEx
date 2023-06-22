@@ -1,0 +1,123 @@
+<div class="page" *ngIf="!loading">
+  <app-menu></app-menu>
+  <app-user-toolbar></app-user-toolbar>
+  <main class="content">
+    <div class="greeting">
+      Сторінка Деталей Групи
+    </div>
+    <div class="task" *ngIf="tasksLists">
+      <div class="task__main">
+        <div class="task__header">
+          <div class="title">{{reviorsGroup.title}}</div>
+          <div class="search-field">
+            <input class="input__field" placeholder="Введіть текст" [(ngModel)]="commentTitle">
+            <button class="input__button" (click)="createComment()">Додати Коментар</button>
+          </div>
+          <div class="task__comments-lists">
+            <div class="tasks" *ngIf="reviorsGroup.tasksLists">
+              <table class="tasks__list">
+                <thead>
+                <tr>
+                  <th>Список Завдань</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let list of reviorsGroup.tasksLists">
+                  <td>
+                    <a [routerLink]="['/tasksList', list._id]">{{list.title}}</a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="task__comments" *ngIf="commentsData">
+              <div class="comments__header">
+                Коментарі
+              </div>
+              <div class="comment" *ngFor="let c of commentsData">
+                <div class="comment__user">{{c.createdBy.fullName}}: </div>
+                <div class="comment__text">{{c.title}}</div>
+                <div class="comment__bottom">
+                  <div class="comment__delete" *ngIf="reviorsGroup.mainRevisor._id === currentUser._id" (click)="deleteComment(c._id)">Видалити</div>
+                  <div class="comment__date">{{c.createdAt | date : 'dd.MM.YYYY'}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="task__details">
+          <div class="info">Деталі</div>
+          <div class="task__attribute">
+            <div class="attribute-title">Головний Ревізор: </div>
+            <div class="attribute-value">{{reviorsGroup.mainRevisor.fullName}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Ревізори: </div>
+            <div class="attribute-value" *ngFor="let revisor of reviorsGroup.revisors">{{revisor.fullName}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Дата Створення: </div>
+            <div class="attribute-value">{{reviorsGroup.createdAt | date : 'dd.MM.YYYY'}}</div>
+          </div>
+          <div class="task__actions" *ngIf="currentUser._id === reviorsGroup.mainRevisor._id">
+            <button class="action-button" [ngbPopover]="changeForm" #popover="ngbPopover" placement="left" [autoClose]="'outside'">Змінити</button>
+            <button class="action-button" [ngbPopover]="deleteForm" #popoverDelete="ngbPopover" [autoClose]="'outside'">Видалити</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<ng-template #deleteForm>
+  <form class="popover-form">
+    <div class="form-header">Видалити Групу</div>
+    <div class="form-group">
+      <label class="input-label">Впевнені, що хочете видалити групу?</label>
+    </div>
+    <div class="form-bottom">
+      <button class="btn btn-primary action" (click)="deleteGorup()">Видалити</button>
+      <button class="btn btn-primary action" (click)="popoverDelete.close()">Закрити</button>
+    </div>
+  </form>
+</ng-template>
+<ng-template #changeForm>
+  <form [formGroup]="groupForm" class="popover-form">
+    <div class="form-header">Створити Групу</div>
+    <div class="form-group">
+      <label class="input-label">Назва:</label>
+      <input class="input-value__custom" formControlName="title">
+    </div>
+    <div class="form-group">
+      <div ngbDropdown class="filter drop">
+        <button class="filter-button" ngbDropdownToggle>Списки</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+          <button ngbDropdownItem *ngFor="let list of tasksLists" (click)="setLists(list._id, list.title)">{{list.title}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-tasks">
+      <label>Списки: </label>
+      <label class="added-field" *ngFor="let list of listsNames">{{list || '-'}}</label>
+    </div>
+    <div class="form-group" *ngIf="users">
+      <div ngbDropdown class="filter drop">
+        <button class="filter-button" ngbDropdownToggle>Ревізори</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+          <button ngbDropdownItem *ngFor="let user of users" (click)="setUsers(user._id, user.fullName)">{{user.fullName}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-tasks">
+      <label>Ревізори: </label>
+      <label class="added-field" *ngFor="let name of usersNames">{{name || '-'}}</label>
+    </div>
+    <div class="form-bottom">
+      <button class="btn btn-primary action" [disabled]="groupForm.invalid" (click)="updateGroup()">Зберегти</button>
+      <button class="btn btn-primary action" (click)="reset()">Скасувати</button>
+      <button class="btn btn-primary action" (click)="popover.close()">Закрити</button>
+    </div>
+    <div class="alert-message" *ngIf="errorMessage != ''">
+      {{errorMessage}}
+    </div>
+  </form>
+</ng-template>

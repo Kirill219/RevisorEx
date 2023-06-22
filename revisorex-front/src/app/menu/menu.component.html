@@ -1,0 +1,34 @@
+<aside class="sidebar">
+  <div class="logo-container">
+    <div class="logo">
+      <a [routerLink]="['/home']"><img class="logo__image" src="../../assets/logo.png"></a>
+    </div>
+  </div>
+  <div class="sidebar-main">
+    <div class="sidebar-section">
+      <div class="sidebar-section__title">Керування</div>
+      <nav class="sidemenu">
+        <ul>
+          <li>
+            <a [routerLink]="['/tags']">Теги</a>
+            <a [routerLink]="['/revisorsGroups']">Групи Ревізорів</a>
+            <a [routerLink]="['/myTasks']">Мої завдання</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section__title">Ревізорія</div>
+      <nav class="sidemenu">
+        <ul>
+          <li>
+            <a [routerLink]="'/tasksLists'">Списки Завдань</a>
+            <a [routerLink]="'/tasks'">Завдання</a>
+            <a [routerLink]="'/hotels'">Готелі</a>
+            <a [routerLink]="'/users'">Користувачі</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</aside>

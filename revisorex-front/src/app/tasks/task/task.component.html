@@ -1,0 +1,56 @@
+<div class="page" *ngIf="!loading">
+  <app-menu></app-menu>
+  <app-user-toolbar></app-user-toolbar>
+  <main class="content">
+    <div class="greeting">
+      Сторінка Деталей Завдання
+    </div>
+    <div class="task">
+      <div class="task__main">
+        <div class="task__header">
+          <div class="title">{{task.title}}</div>
+          <div class="description">{{task.description}}</div>
+          <div class="task__result">
+            <div class="result">
+              <div class="result__title">Результат: </div>
+              <div class="result__value" [ngClass]="{'result__value-added': task.result}" *ngIf="task.type === 'Оцінка' && task.result">{{task.result + '\u2605'}}</div>
+              <div class="result__value" [ngClass]="{'result__value-added': task.result}" *ngIf="task.type === 'Так/Ні' && task.result">{{task.result}}</div>
+              <div class="result__value" *ngIf="!task.result"> - </div>
+            </div>
+            <div class="result__image">
+              <img class="image" *ngIf="task.image" [src]="'https://localhost/uploads/' + task.image" alt="Result Image">
+              <div class="no-image" *ngIf="!task.image">НЕМАЄ ЗОБРАЖЕННЯ</div>
+            </div>
+          </div>
+        </div>
+        <div class="task__details">
+          <div class="info">Деталі</div>
+          <div class="task__attribute">
+            <div class="attribute-title">Тип: </div>
+            <div class="attribute-value">{{task.type}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Тег: </div>
+            <div class="attribute-value">{{task.tag}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Готель: </div>
+            <div class="attribute-value">{{task.hotel.title}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Виконавець: </div>
+            <div class="attribute-value">{{task.assignedTo.fullName}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Автор: </div>
+            <div class="attribute-value">{{task.createdBy.fullName}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Дата Створення: </div>
+            <div class="attribute-value">{{task.createdAt | date : 'dd.MM.YYYY'}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

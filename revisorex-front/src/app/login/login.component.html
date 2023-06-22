@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="login-form">
+    <h2>Авторизуватися</h2>
+    <form (ngSubmit)="login()" [formGroup]="loginForm">
+      <div class="form-group">
+        <label for="email">Пошта</label>
+        <input type="email" id="email" name="email" formControlName="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Пароль</label>
+        <input type="password" id="password" name="password" formControlName="password" required>
+      </div>
+      <button type="submit" class="login-button" [disabled]="loginForm.invalid" [ngClass]="{ 'disabled-button': loginForm.invalid }">Увійти</button>
+      <a [routerLink]="['/register']">Не зарєстровані? Відправте форму на створення облікового запису тут</a>
+      <div class="alert-message" *ngIf="errorMessage != ''">
+        {{errorMessage}}
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="topbar">
+  <div class="topbar__common">
+    <div class="user-toolbar-widget">
+      <div class="user-toolbar-widget__logo">
+        <span>
+          <a [routerLink]="['/currentUser']" class="initials">
+            {{user.initials}}
+          </a>
+        </span>
+      </div>
+      <button class="logout" (click)="logout()">Вийти</button>
+    </div>
+  </div>
+</div>

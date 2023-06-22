@@ -1,0 +1,158 @@
+@import 'bootstrap';
+
+$leftColumnWidth: 15%;
+$minColumnWidth: 190px;
+
+.dropdown-toggle::after {
+  margin-left: 10px;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.content {
+  flex: 1;
+  padding-left: 70px;
+  background: #f0f0f0;
+  margin-left: $leftColumnWidth;
+  min-height: 100vh;
+}
+
+@media only screen and (max-width: 1280px) {
+  .main {
+    margin-left: $minColumnWidth;
+  }
+}
+
+.greeting {
+  padding-top: 110px;
+  font-weight: bold;
+  font-size: 32px;
+}
+
+.tasks {
+  padding-right: 100px;
+  padding-top: 20px;
+
+  &__list {
+    @extend .table;
+    @extend .table-hover;
+    @extend .table-borderless;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    margin-top: 20px;
+
+    tbody {
+      td {
+        text-align: center;
+      }
+
+      tr:not(:last-child) {
+        border-bottom: 1px solid #cccccc;
+      }
+    }
+
+    thead {
+      th {
+        text-align: center;
+      }
+
+      tr {
+        border-bottom: 1px solid #cccccc;
+      }
+    }
+  }
+}
+
+.delete-button {
+  background: #487390;
+  color: #fff;
+  border-radius: 12px;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 30px;
+
+  &:hover {
+    background: #6193b4;
+    border: none;
+  }
+}
+
+.add-task {
+  background: #487390;
+  color: #fff;
+  border-radius: 12px;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 40px;
+  line-height: 5px;
+  margin-bottom: 20px;
+
+  &:hover {
+    background: #6193b4;
+    border: none;
+  }
+}
+
+.popover-form {
+  border: 1px solid #cccccc;
+  border-radius: 12px;
+  width: 90%;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  margin: auto;
+}
+
+.form-group {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.form-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #999999;
+  padding-bottom: 10px;
+}
+
+.input-label {
+  padding-right: 10px;
+  color: gray;
+  font-weight: bold;
+}
+
+.input-value {
+  width: 100%;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+}
+
+.form-bottom {
+  display: flex;
+  margin-top: 10px;
+  border-top: 1px solid #999999;
+  padding: 10px;
+  margin-right: auto;
+}
+
+.action {
+  background-color: #487390;
+  margin-right: 5px;
+  height: 35px;
+}
+
+.alert-message {
+  color: red;
+}

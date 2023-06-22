@@ -1,0 +1,57 @@
+<div class="page" *ngIf="!loading">
+  <app-menu></app-menu>
+  <app-user-toolbar></app-user-toolbar>
+  <main class="content">
+    <div class="greeting">
+      Сторінка Ваших Завдань
+    </div>
+    <div class="tasks">
+      <div class="tasks__filters">
+        <div class="search-field">
+          <input class="input__field" placeholder="Введіть назву" [(ngModel)]="titleFilter">
+          <button class="input__button" (click)="loadTasks()">Пошук</button>
+        </div>
+        <div ngbDropdown class="filter">
+          <button class="filter-button" ngbDropdownToggle>Фільтр Типу</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+            <button ngbDropdownItem (click)="filterData('type', 'Так/Ні')" value="Так/Ні">Так/Ні</button>
+            <button ngbDropdownItem (click)="filterData('type', 'Оцінка')" value="Оцінка">Оцінка</button>
+          </div>
+        </div>
+        <div ngbDropdown class="filter">
+          <button class="filter-button" ngbDropdownToggle>Фільтр Тегу</button>
+          <div ngbDropdownMenu class="filter-menu">
+            <button ngbDropdownItem (click)="filterData('tag', tag.title)" *ngFor="let tag of tags">{{tag.title}}</button>
+          </div>
+        </div>
+        <button class="filter-button" (click)="loadTasks()">Скасувати</button>
+      </div>
+      <table class="tasks__list">
+        <thead>
+        <tr>
+          <th>Назва</th>
+          <th>Тип</th>
+          <th>Тег</th>
+          <th>Автор</th>
+          <th>Виконавець</th>
+          <th>Результат</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let task of tasks">
+          <td>
+            <a [routerLink]="['/myTask', task._id]">{{task.title}}</a>
+          </td>
+          <td>{{task.type}}</td>
+          <td>{{task.tag}}</td>
+          <td>{{task.createdBy.fullName}}</td>
+          <td>{{task.assignedTo.fullName}}</td>
+          <td *ngIf="task.type === 'Оцінка' && task.result">{{task.result + '\u2605'}}</td>
+          <td *ngIf="task.type === 'Так/Ні' && task.result">{{task.result}}</td>
+          <td *ngIf="!task.result"> - </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>

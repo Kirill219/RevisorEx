@@ -1,0 +1,39 @@
+$leftColumnWidth: 15%;
+$minColumnWidth: 190px;
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.content {
+  flex: 1;
+  padding-left: 70px;
+  background: #f0f0f0;
+  margin-left: $leftColumnWidth;
+  min-height: 100vh;
+}
+
+@media only screen and (max-width: 1280px) {
+  .main {
+    margin-left: $minColumnWidth;
+  }
+}
+
+.greeting {
+  padding-top: 100px;
+  font-weight: bold;
+  font-size: 32px;
+}
+
+.image-container {
+  padding-top: 20px;
+  padding-left: 30px;
+  width: 75%;
+}
+
+.image {
+  border-radius: 12px;
+  max-width: 100%;
+}

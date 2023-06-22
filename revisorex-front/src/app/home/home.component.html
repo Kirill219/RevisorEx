@@ -1,0 +1,10 @@
+<div class="page" *ngIf="!loading">
+  <app-menu></app-menu>
+  <app-user-toolbar></app-user-toolbar>
+  <main class="content">
+    <div class="greeting">Ласкаво просимо до РЕВІЗОР ЕКСПІРІЕНС, {{currentUser.fullName}}!</div>
+    <div class="image-container">
+      <img class="image" src="../../assets/greeting.jpg">
+    </div>
+  </main>
+</div>

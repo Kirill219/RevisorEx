@@ -1,0 +1,43 @@
+<div class="page" *ngIf="!loading">
+  <app-menu></app-menu>
+  <app-user-toolbar></app-user-toolbar>
+  <main class="content">
+    <div class="greeting">
+      Сторінка Користувачів
+    </div>
+    <div class="tasks" *ngIf="users">
+      <div class="tasks__filters">
+        <div class="search-field">
+          <input class="input__field" placeholder="Введіть назву" [(ngModel)]="titleFilter">
+          <button class="input__button" (click)="loadUsers()">Пошук</button>
+        </div>
+        <div ngbDropdown class="filter">
+          <button class="filter-button" ngbDropdownToggle>Фільтр Ролі</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+            <button ngbDropdownItem (click)="filterData('role', 'Ревізор')">Ревізор</button>
+            <button ngbDropdownItem (click)="filterData('role', 'Головний Ревізор')">Головний Ревізор</button>
+          </div>
+        </div>
+        <button class="filter-button" (click)="loadUsers()">Скасувати</button>
+      </div>
+      <table class="tasks__list">
+        <thead>
+        <tr>
+          <th>Ім'я</th>
+          <th>Роль</th>
+          <th>Підприємство</th>
+          <th>Дата Створення</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of users">
+          <td *ngIf="user.role !== 'Адмін'">{{user.fullName}}</td>
+          <td *ngIf="user.role !== 'Адмін'">{{user.role}}</td>
+          <td *ngIf="user.role !== 'Адмін'">{{user.company}}</td>
+          <td *ngIf="user.role !== 'Адмін'">{{user.createdAt | date : 'dd.MM.YYYY'}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>

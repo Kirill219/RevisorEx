@@ -1,0 +1,160 @@
+@import 'bootstrap';
+
+$leftColumnWidth: 15%;
+$minColumnWidth: 190px;
+
+.dropdown-toggle::after {
+  margin-left: 10px;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.content {
+  flex: 1;
+  padding-left: 70px;
+  background: #f0f0f0;
+  margin-left: $leftColumnWidth;
+  min-height: 100vh;
+}
+
+@media only screen and (max-width: 1280px) {
+  .main {
+    margin-left: $minColumnWidth;
+  }
+}
+
+.greeting {
+  padding-top: 110px;
+  font-weight: bold;
+  font-size: 32px;
+}
+
+.tasks {
+  padding-right: 100px;
+  padding-top: 20px;
+
+  &__filters {
+    display: flex;
+    width: 75%;
+    height: 60px;
+    background: white;
+    border-radius: 12px;
+    padding: 10px;
+    justify-content: space-between;
+  }
+
+  &__list {
+    @extend .table;
+    @extend .table-hover;
+    @extend .table-borderless;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    margin-top: 20px;
+
+    tbody {
+      td {
+        text-align: center;
+      }
+
+      tr:not(:last-child) {
+        border-bottom: 1px solid #cccccc;
+      }
+    }
+
+    thead {
+      th {
+        text-align: center;
+      }
+
+      tr {
+        border-bottom: 1px solid #cccccc;
+      }
+    }
+  }
+}
+
+.filter-button {
+  background: #487390;
+  color: #fff;
+  border-radius: 12px;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 40px;
+  line-height: 5px;
+
+  &:hover {
+    background: #6193b4;
+    border: none;
+  }
+}
+
+.add-task {
+  background: #487390;
+  color: #fff;
+  border-radius: 12px;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 40px;
+  line-height: 5px;
+  margin-bottom: 20px;
+
+  &:hover {
+    background: #6193b4;
+    border: none;
+  }
+}
+
+.filter-menu {
+  background: #487390;
+
+  button {
+    color: #fff;
+
+    &:hover {
+      background: #6193b4;
+      color: white;
+    }
+  }
+}
+
+.search-field {
+  display: flex;
+  height: 40px;
+}
+
+.input {
+  &__button {
+    background: #487390;
+    color: #fff;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    padding: 5px;
+
+    &:hover {
+      background: #6193b4;
+      border: none;
+    }
+  }
+
+  &__field {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border: 1px solid #cccccc;
+    padding: 4px;
+    width: 130px;
+  }
+}

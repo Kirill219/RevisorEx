@@ -1,0 +1,61 @@
+$leftColumnWidth: 15%;
+$minColumnWidth: 190px;
+
+.topbar {
+  background: #fafbfb;
+  display: flex;
+  left: $leftColumnWidth;
+  height: 70px;
+  position: fixed;
+  right: 0;
+  z-index: 10;
+
+  &__common {
+    flex: 0 1 auto;
+    margin-right: 10px;
+    margin-left: auto;
+  }
+}
+
+.user-toolbar-widget {
+  display: flex;
+  padding: 10px;
+
+  &__logo {
+    padding-right: 15px;
+
+    > span {
+      background: #4189DE;
+      border-radius: 50%;
+      display: inline-block;
+      font-size: 20px;
+      color: white;
+      height: 50px;
+      line-height: 50px;
+      width: 50px;
+      text-align: center;
+      cursor: pointer;
+    }
+  }
+}
+
+.logout {
+  background: #487390;
+  color: #fff;
+  border-radius: 7px;
+  border: none;
+  text-align: center;
+  width: 90px;
+  height: 50px;
+  cursor: pointer;
+  font-size: 20px;
+
+  &:hover {
+    background: #6193b4;
+  }
+}
+
+.initials {
+  color: white;
+  text-decoration: none;
+}

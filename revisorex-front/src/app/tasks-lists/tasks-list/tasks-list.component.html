@@ -1,0 +1,115 @@
+<div class="page" *ngIf="!loading">
+  <app-menu></app-menu>
+  <app-user-toolbar></app-user-toolbar>
+  <main class="content">
+    <div class="greeting">
+      Сторінка Деталей Списку Завдань
+    </div>
+    <div class="task">
+      <div class="task__main">
+        <div class="task__header">
+          <div class="title">{{tasksList.title}}</div>
+          <div class="description">{{tasksList.description}}</div>
+          <div class="tasks" *ngIf="tasksList.tasks">
+            <table class="tasks__list">
+              <thead>
+              <tr>
+                <th>Завдання</th>
+                <th>Результат</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let task of tasksList.tasks">
+                <td>
+                  <a [routerLink]="['/task', task._id]">{{task.title}}</a>
+                </td>
+                <td *ngIf="task.type === 'Оцінка' && task.result">{{task.result + '\u2605'}}</td>
+                <td *ngIf="task.type === 'Так/Ні' && task.result">{{task.result}}</td>
+                <td *ngIf="!task.result"> - </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="task__details">
+          <div class="info">Деталі</div>
+          <div class="task__attribute">
+            <div class="attribute-title">Пріоритет: </div>
+            <div class="attribute-value">{{tasksList.priority}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Автор: </div>
+            <div class="attribute-value">{{tasksList.mainRevisor.fullName}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Дата Створення: </div>
+            <div class="attribute-value">{{tasksList.createdAt | date : 'dd.MM.YYYY'}}</div>
+          </div>
+          <div class="task__actions" *ngIf="currentUser._id === tasksList.mainRevisor._id">
+            <button class="action-button" [ngbPopover]="changeForm" #popover="ngbPopover" placement="left" [autoClose]="'outside'">Змінити</button>
+            <button class="action-button" [ngbPopover]="deleteForm" #popoverDelete="ngbPopover" [autoClose]="'outside'">Видалити</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<ng-template #deleteForm>
+  <form class="popover-form">
+    <div class="form-header">Видалити Список</div>
+    <div class="form-group">
+      <label class="input-label">Впевнені, що хочете видалити список?</label>
+    </div>
+    <div class="form-bottom">
+      <button class="btn btn-primary action" (click)="deleteTasksList(this.taskListId!)">Видалити</button>
+      <button class="btn btn-primary action" (click)="popoverDelete.close()">Закрити</button>
+    </div>
+  </form>
+</ng-template>
+<ng-template #changeForm>
+  <form [formGroup]="tasksListForm" class="popover-form">
+    <div class="form-header">Змінити Список</div>
+    <div class="form-group">
+      <label class="input-label">Назва:</label>
+      <input class="input-value__custom" formControlName="title">
+    </div>
+    <div class="form-group">
+      <label class="input-label">Опис:</label>
+      <input class="input-value__custom" formControlName="description">
+    </div>
+    <div class="form-priority">
+      <label class="input-label">Пріоритет:</label>
+      <div class="priority-options">
+        <label class="input-value-p">
+          <input type="radio" formControlName="priority" value="Високий"> Високий
+        </label>
+        <label class="input-value-p">
+          <input type="radio" formControlName="priority" value="Середній"> Середній
+        </label>
+        <label class="input-value-p">
+          <input type="radio" formControlName="priority" value="Низький"> Низький
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <div ngbDropdown class="filter drop">
+        <button class="filter-button" ngbDropdownToggle>Завдання</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+          <button ngbDropdownItem *ngFor="let task of tasks" (click)="setTasks(task._id, task.title)">{{task.title}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-tasks">
+      <label>Завдання: </label>
+      <label class="added-field" *ngFor="let task of tasksNames">{{task || '-'}}</label>
+    </div>
+    <div class="form-bottom">
+      <button class="btn btn-primary action" [disabled]="tasksListForm.invalid" (click)="updateTasksList()">Зберегти</button>
+      <button class="btn btn-primary action" (click)="reset()">Скасувати</button>
+      <button class="btn btn-primary action" (click)="popover.close()">Закрити</button>
+    </div>
+    <div class="alert-message" *ngIf="errorMessage != ''">
+      {{errorMessage}}
+    </div>
+  </form>
+</ng-template>

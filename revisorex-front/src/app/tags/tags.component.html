@@ -1,0 +1,56 @@
+<div class="page" *ngIf="!loading">
+  <app-menu></app-menu>
+  <app-user-toolbar></app-user-toolbar>
+  <main class="content">
+    <div class="greeting">
+      Сторінка Тегів
+    </div>
+    <div class="tasks">
+      <button class="add-task" [ngbPopover]="addForm" #popover="ngbPopover" placement="bottom-left" [autoClose]="'outside'">Додати Тег</button>
+      <table class="tasks__list">
+        <thead>
+        <tr>
+          <th>Назва</th>
+          <th *ngIf="user.role == 'Головний Ревізор'">Видалення</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let tag of tags">
+          <td>{{tag.title}}</td>
+          <td *ngIf="user.role == 'Головний Ревізор'">
+            <button class="delete-button"  [ngbPopover]="deleteForm" #popoverDelete="ngbPopover" [autoClose]="'outside'">Видалити тег</button>
+            <ng-template #deleteForm>
+              <form [formGroup]="tagForm" class="popover-form">
+                <div class="form-header">Видалити Тег</div>
+                <div class="form-group">
+                  <label class="input-label">Впевнені, що хочете видалити тег?</label>
+                </div>
+                <div class="form-bottom">
+                  <button class="btn btn-primary action" (click)="deleteTag(tag._id)">Видалити</button>
+                  <button class="btn btn-primary action" (click)="popoverDelete.close()">Закрити</button>
+                </div>
+              </form>
+            </ng-template>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+<ng-template #addForm>
+  <form [formGroup]="tagForm" class="popover-form">
+    <div class="form-header">Додати Тег</div>
+    <div class="form-group">
+      <label class="input-label">Тег:</label>
+      <input class="input-value" formControlName="title">
+    </div>
+    <div class="form-bottom">
+      <button class="btn btn-primary action" [disabled]="tagForm.invalid" (click)="createTag()">Зберегти</button>
+      <button class="btn btn-primary action" (click)="popover.close()">Закрити</button>
+    </div>
+    <div class="alert-message" *ngIf="errorMessage != ''">
+      {{errorMessage}}
+    </div>
+  </form>
+</ng-template>

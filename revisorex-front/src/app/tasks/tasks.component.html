@@ -1,0 +1,116 @@
+<div class="page" *ngIf="!loading">
+  <app-menu></app-menu>
+  <app-user-toolbar></app-user-toolbar>
+  <main class="content">
+    <div class="greeting">
+      Сторінка Завдань
+    </div>
+    <div class="tasks" *ngIf="tasks && tags">
+      <button class="add-task" [ngbPopover]="createForm" #popover="ngbPopover" placement="bottom-left" [autoClose]="'outside'" *ngIf="currentUser.role == 'Головний Ревізор'">Додати Завдання</button>
+      <div class="tasks__filters">
+        <div class="search-field">
+          <input class="input__field" placeholder="Введіть назву" [(ngModel)]="titleFilter">
+          <button class="input__button" (click)="loadTasks()">Пошук</button>
+        </div>
+        <div ngbDropdown class="filter">
+          <button class="filter-button" ngbDropdownToggle>Фільтр Типу</button>
+          <div ngbDropdownMenu class="filter-menu">
+            <button ngbDropdownItem (click)="filterData('type', 'Так/Ні')">Так/Ні</button>
+            <button ngbDropdownItem (click)="filterData('type', 'Оцінка')">Оцінка</button>
+          </div>
+        </div>
+        <div ngbDropdown class="filter">
+          <button class="filter-button" ngbDropdownToggle>Фільтр Тегу</button>
+          <div ngbDropdownMenu class="filter-menu">
+            <button ngbDropdownItem (click)="filterData('tag', tag.title)" *ngFor="let tag of tags">{{tag.title}}</button>
+          </div>
+        </div>
+        <button class="filter-button" (click)="loadTasks()">Скасувати</button>
+      </div>
+      <table class="tasks__list">
+        <thead>
+        <tr>
+          <th>Назва</th>
+          <th>Тип</th>
+          <th>Тег</th>
+          <th>Автор</th>
+          <th>Дата Створення</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let task of tasks">
+          <td>
+            <a [routerLink]="['/task', task._id]">{{task.title}}</a>
+          </td>
+          <td>{{task.type}}</td>
+          <td>{{task.tag}}</td>
+          <td>{{task.createdBy.fullName}}</td>
+          <td>{{task.createdAt | date : 'dd.MM.YYYY'}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+<ng-template #createForm>
+  <form [formGroup]="taskForm" class="popover-form">
+    <div class="form-header">Додати Завдання</div>
+    <div class="form-group">
+      <label class="input-label">Назва:</label>
+      <input class="input-value__custom" formControlName="title">
+    </div>
+    <div class="form-group">
+      <label class="input-label">Опис:</label>
+      <input class="input-value__custom" formControlName="description">
+    </div>
+    <div class="form-group">
+      <label class="input-label">Тип:</label>
+      <label class="input-value">
+        <input type="radio" formControlName="type" value="Оцінка"> Оцінка
+      </label>
+      <label class="input-value">
+        <input type="radio" formControlName="type" value="Так/Ні"> Так/Ні
+      </label>
+    </div>
+    <div class="form-group">
+      <div ngbDropdown class="filter drop">
+        <button class="filter-button" ngbDropdownToggle>Тег</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+          <button ngbDropdownItem *ngFor="let tag of tags" (click)="setTag(tag.title)">{{tag.title}}</button>
+        </div>
+      </div>
+      <div ngbDropdown class="filter drop" *ngIf="users">
+        <button class="filter-button" ngbDropdownToggle>Виконавець</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+          <button ngbDropdownItem *ngFor="let user of users" (click)="setUser(user._id, user.fullName)">{{user.fullName}}</button>
+        </div>
+      </div>
+      <div ngbDropdown class="filter drop">
+        <button class="filter-button" ngbDropdownToggle>Готель</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+          <button ngbDropdownItem *ngFor="let hotel of hotels" (click)="setHotel(hotel._id, hotel.title)">{{hotel.title}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Тег: </label>
+      <label class="added-field">{{tagName || '-'}}</label>
+    </div>
+    <div class="form-group">
+      <label>Виконавець: </label>
+      <label class="added-field">{{userName || '-'}}</label>
+    </div>
+    <div class="form-group">
+      <label>Готель: </label>
+      <label class="added-field">{{hotelName || '-'}}</label>
+    </div>
+    <div class="form-bottom">
+      <button class="btn btn-primary action" [disabled]="taskForm.invalid" (click)="createTask()">Зберегти</button>
+      <button class="btn btn-primary action" (click)="reset()">Скасувати</button>
+      <button class="btn btn-primary action" (click)="popover.close()">Закрити</button>
+    </div>
+    <div class="alert-message" *ngIf="errorMessage != ''">
+      {{errorMessage}}
+    </div>
+  </form>
+</ng-template>

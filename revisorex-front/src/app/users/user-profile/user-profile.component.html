@@ -1,0 +1,73 @@
+<div class="page" *ngIf="!loading">
+  <app-menu></app-menu>
+  <app-user-toolbar></app-user-toolbar>
+  <main class="content">
+    <div class="greeting">
+      Сторінка Користувача
+    </div>
+    <div class="task">
+      <div class="task__main">
+        <div class="task__details">
+          <div class="info">Деталі</div>
+          <div class="task__attribute">
+            <div class="attribute-title">Ім'я: </div>
+            <div class="attribute-value">{{currentUser.fullName}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Роль: </div>
+            <div class="attribute-value">{{currentUser.role}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Підприємство: </div>
+            <div class="attribute-value">{{currentUser.company}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Пошта: </div>
+            <div class="attribute-value">{{currentUser.email}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Дата Створення: </div>
+            <div class="attribute-value">{{currentUser.createdAt | date : 'dd.MM.YYYY'}}</div>
+          </div>
+          <div class="task__actions">
+            <button class="action-button" [ngbPopover]="changeForm" #popover="ngbPopover" [autoClose]="'outside'">Змінити</button>
+            <button class="action-button" [ngbPopover]="deleteForm" #popoverDelete="ngbPopover" [autoClose]="'outside'">Видалити</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<ng-template #deleteForm>
+  <form class="popover-form">
+    <div class="form-header">Видалити Профіль</div>
+    <div class="form-group">
+      <label class="input-label">Впевнені, що хочете видалити свій профіль?</label>
+    </div>
+    <div class="form-bottom">
+      <button class="btn btn-primary action" (click)="deleteCurrentUser()">Видалити</button>
+      <button class="btn btn-primary action" (click)="popoverDelete.close()">Закрити</button>
+    </div>
+  </form>
+</ng-template>
+<ng-template #changeForm>
+  <form [formGroup]="userForm" class="popover-form">
+    <div class="form-header">Змінити Користувача</div>
+    <div class="form-group">
+      <label class="input-label">Пошта:</label>
+      <input class="input-value__custom" formControlName="email">
+    </div>
+    <div class="form-group">
+      <label class="input-label">Пароль:</label>
+      <input type="password" class="input-value__custom" formControlName="password">
+    </div>
+    <div class="form-bottom">
+      <button class="btn btn-primary action" [disabled]="userForm.invalid" (click)="updateCurrentUser()">Зберегти</button>
+      <button class="btn btn-primary action" (click)="reset()">Скасувати</button>
+      <button class="btn btn-primary action" (click)="popover.close()">Закрити</button>
+    </div>
+    <div class="alert-message" *ngIf="errorMessage != ''">
+      {{errorMessage}}
+    </div>
+  </form>
+</ng-template>

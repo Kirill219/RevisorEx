@@ -1,0 +1,170 @@
+@import 'bootstrap';
+
+$leftColumnWidth: 15%;
+$minColumnWidth: 190px;
+
+.dropdown-toggle::after {
+  margin-left: 10px;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.content {
+  flex: 1;
+  padding-left: 70px;
+  background: #f0f0f0;
+  margin-left: $leftColumnWidth;
+  min-height: 100vh;
+}
+
+@media only screen and (max-width: 1280px) {
+  .main {
+    margin-left: $minColumnWidth;
+  }
+}
+
+.greeting {
+  padding-top: 110px;
+  font-weight: bold;
+  font-size: 32px;
+}
+
+.task {
+  padding-top: 20px;
+
+  &__main {
+    display: flex;
+  }
+
+  &__header {
+    width: 60%;
+    background: white;
+    border-radius: 12px;
+    margin-right: 20px;
+    margin-top: 10px;
+    padding: 10px;
+  }
+
+  &__details {
+    width: 30%;
+    height: 100%;
+    background: white;
+    border-radius: 12px;
+    margin-right: 20px;
+    margin-top: 10px;
+    padding: 16px;
+  }
+
+  &__attribute {
+    display: flex;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 16px;
+  }
+
+  &__actions {
+    padding-top: 10px;
+  }
+}
+
+.attribute-title {
+  font-weight: bold;
+  color: #999999;
+}
+
+.attribute-value {
+  margin-left: auto;
+}
+
+.info {
+  font-size: 24px;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.title {
+  font-size: 24px;
+  padding: 10px;
+}
+
+.description {
+  font-size: 24px;
+  padding: 10px;
+  color: gray;
+}
+
+.result {
+  display: flex;
+
+  &__title {
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  &__value {
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    padding-right: 50px;
+  }
+
+  &__value-added {
+    margin-left: 10px;
+    padding: 10px;
+    font-size: 20px;
+    background-color: #ffff41;
+    border: 1px solid #ffff41;
+    border-radius: 12px;
+  }
+
+  &__image {
+    width: 100%;
+    height: 300px;
+    background: #cccccc;
+    border-radius: 3px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+  }
+}
+
+.action-button {
+  background: #487390;
+  color: #fff;
+  border-radius: 12px;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  height: 40px;
+  margin-left: auto;
+  margin-right: 10px;
+
+  &:hover {
+    background: #6193b4;
+    border: none;
+  }
+}
+
+.no-image {
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+  padding-top: 20%;
+  color: #999999;
+}
+
+.image {
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 300px;
+}

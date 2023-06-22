@@ -1,0 +1,156 @@
+<div class="page" *ngIf="!loading">
+  <app-menu></app-menu>
+  <app-user-toolbar></app-user-toolbar>
+  <main class="content">
+    <div class="greeting">
+      Сторінка Деталей Завдання
+    </div>
+    <div class="task">
+      <div class="task__main">
+        <div class="task__header">
+          <div class="title">{{task.title}}</div>
+          <div class="description">{{task.description}}</div>
+          <div class="task__result">
+            <div class="result">
+              <div class="result__title">Результат: </div>
+              <div class="result__value" [ngClass]="{'result__value-added': task.result}" *ngIf="task.type === 'Оцінка' && task.result">{{task.result + '\u2605'}}</div>
+              <div class="result__value" [ngClass]="{'result__value-added': task.result}" *ngIf="task.type === 'Так/Ні' && task.result">{{task.result}}</div>
+              <div class="result__value" *ngIf="!task.result"> - </div>
+              <button class="action-button" [ngbPopover]="resultForm" #popover="ngbPopover" placement="bottom" [autoClose]="'outside'" *ngIf="user._id === task.assignedTo._id && !task.result">Додати результат</button>
+            </div>
+            <div class="result__image">
+              <img class="image" *ngIf="task.image" [src]="'https://localhost/uploads/' + task.image" alt="Result Image">
+              <div class="no-image" *ngIf="!task.image">НЕМАЄ ЗОБРАЖЕННЯ</div>
+            </div>
+          </div>
+        </div>
+        <div class="task__details">
+          <div class="info">Деталі</div>
+          <div class="task__attribute">
+            <div class="attribute-title">Тип: </div>
+            <div class="attribute-value">{{task.type}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Тег: </div>
+            <div class="attribute-value">{{task.tag}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Готель: </div>
+            <div class="attribute-value">{{task.hotel.title}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Виконавець: </div>
+            <div class="attribute-value">{{task.assignedTo.fullName}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Автор: </div>
+            <div class="attribute-value">{{task.createdBy.fullName}}</div>
+          </div>
+          <div class="task__attribute">
+            <div class="attribute-title">Дата Створення: </div>
+            <div class="attribute-value">{{task.createdAt | date : 'dd.MM.YYYY'}}</div>
+          </div>
+          <div class="task__actions" *ngIf="user._id === task.createdBy._id">
+            <button class="action-button" [ngbPopover]="changeForm" #popoverChange="ngbPopover" [autoClose]="'outside'">Змінити</button>
+            <button class="action-button" [ngbPopover]="deleteForm" #popoverDelete="ngbPopover" [autoClose]="'outside'">Видалити</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<ng-template #resultForm>
+  <form [formGroup]="addResultForm" class="popover-form" enctype="multipart/form-data">
+    <div class="form-header">Додати Результат</div>
+    <div class="form-group" *ngIf="task.type == 'Оцінка'">
+      <label class="input-label">Результат:</label>
+      <label class="input-value">
+        <input type="radio" formControlName="result" value="1"> 1&#9733;
+      </label>
+      <label class="input-value">
+        <input type="radio" formControlName="result" value="2"> 2&#9733;
+      </label>
+      <label class="input-value">
+        <input type="radio" formControlName="result" value="3"> 3&#9733;
+      </label>
+      <label class="input-value">
+        <input type="radio" formControlName="result" value="4"> 4&#9733;
+      </label>
+      <label class="input-value">
+        <input type="radio" formControlName="result" value="5"> 5&#9733;
+      </label>
+    </div>
+    <div class="form-group" *ngIf="task.type == 'Так/Ні'">
+      <label class="input-label">Результат:</label>
+      <label class="input-value">
+        <input type="radio" formControlName="result" value="Задовольняє"> Задовольняє
+      </label>
+      <label class="input-value">
+        <input type="radio" formControlName="result" value="Не задовольняє"> Не задовольняє
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="input-label">Зображення:</label>
+      <input class="input-value" type="file" (change)="onFileChange($event)" formControlName="image" id="inputField">
+    </div>
+    <div class="form-bottom">
+      <button class="btn btn-primary action" [disabled]="addResultForm.invalid" (click)="onSubmitResult(popover)">Зберегти</button>
+      <button class="btn btn-primary action" (click)="popover.close()">Закрити</button>
+    </div>
+  </form>
+</ng-template>
+<ng-template #deleteForm>
+  <form class="popover-form">
+    <div class="form-header">Видалити Завдання</div>
+    <div class="form-group">
+      <label class="input-label">Впевнені, що хочете видалити завдання?</label>
+    </div>
+    <div class="form-bottom">
+      <button class="btn btn-primary action" (click)="deleteTask()">Видалити</button>
+      <button class="btn btn-primary action" (click)="popoverDelete.close()">Закрити</button>
+    </div>
+  </form>
+</ng-template>
+<ng-template #changeForm>
+  <form [formGroup]="changeTaskForm" class="popover-form">
+    <div class="form-header">Змінити Список</div>
+    <div class="form-group">
+      <label class="input-label">Назва:</label>
+      <input class="input-value__custom" formControlName="title">
+    </div>
+    <div class="form-group">
+      <label class="input-label">Опис:</label>
+      <input class="input-value__custom" formControlName="description">
+    </div>
+    <div class="form-group">
+      <div ngbDropdown class="filter drop">
+        <button class="filter-button" ngbDropdownToggle>Тег</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+          <button ngbDropdownItem *ngFor="let tag of tags" (click)="setTag(tag.title)">{{tag.title}}</button>
+        </div>
+      </div>
+      <div ngbDropdown class="filter drop">
+        <button class="filter-button" ngbDropdownToggle>Виконавець</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig" class="filter-menu">
+          <button ngbDropdownItem *ngFor="let user of users" (click)="setUser(user._id, user.fullName)">{{user.fullName}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Тег: </label>
+      <label class="added-field">{{tagName || '-'}}</label>
+    </div>
+    <div class="form-group">
+      <label>Виконавець: </label>
+      <label class="added-field">{{userName || '-'}}</label>
+    </div>
+    <div class="form-bottom">
+      <button class="btn btn-primary action" [disabled]="changeTaskForm.invalid" (click)="(updateTask())">Зберегти</button>
+      <button class="btn btn-primary action" (click)="reset()">Скасувати</button>
+      <button class="btn btn-primary action" (click)="popoverChange.close()">Закрити</button>
+    </div>
+    <div class="alert-message" *ngIf="errorMessage != ''">
+      {{errorMessage}}
+    </div>
+  </form>
+</ng-template>
